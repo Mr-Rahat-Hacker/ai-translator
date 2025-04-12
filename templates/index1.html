@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hinglish ↔ English Translator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+            margin-top: 10px;
+        }
+        .clear-button:hover {
+            background-color: #e53935;
+        }
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+        .translated-text-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            height: 120px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hinglish ↔ English Translator</h2>
+        <form method="POST">
+            <label>Source Language:</label>
+            <select name="source_lang">
+                <option>Hinglish</option>
+                <option>Hindi</option>
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Chinese</option>
+                <option>Arabic</option>
+            </select>
+
+            <label>Target Language:</label>
+            <select name="target_lang">
+                <option>English</option>
+                <option>Hinglish</option>
+                <option>Hindi</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Chinese</option>
+                <option>Arabic</option>
+            </select>
+
+            <label>Enter your text:</label>
+            <textarea name="text" rows="4" placeholder="Enter text here..."></textarea>
+
+            <button type="submit">Translate</button>
+            <button type="button" class="clear-button" onclick="clearText()">Clear</button>
+        </form>
+
+        {% if translation %}
+        <!-- <div class="translated-text-box">
+            <h3>🔁 Translated Text:</h3>
+            <p>{{ translation }}</p>
+        </div> -->
+        <div class="translated-text-box" id="translatedBox">
+            <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                🔁 Translated Text:
+                <button onclick="copyText()" title="Copy" style="background: none; border: none; font-size: 20px; cursor: pointer;">📋</button>
+            </h3>
+            <p id="translatedText">{{ translation }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // function clearText() {
+        //     document.querySelector('textarea').value = '';
+        //     document.querySelector('.translated-text-box').style.display = 'none';
+        // }
+
+        function clearText() {
+        document.querySelector('textarea').value = '';
+        const box = document.getElementById('translatedBox');
+        if (box) box.style.display = 'none';
+    }
+
+    function copyText() {
+        const text = document.getElementById("translatedText").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("✅ Translated text copied!");
+        }).catch(err => {
+            alert("❌ Copy failed: " + err);
+        });
+    }
+    </script>
+</body>
+</html>
