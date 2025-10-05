@@ -5,7 +5,9 @@ app = Flask(__name__)
 
 # Configure API
 genai.configure(api_key="AIzaSyB6tkc4h-n9NnNpdVkSqPh2i5cfK4qvU90")
-model = genai.GenerativeModel("gemini-1.5-flash")
+
+# Use gemini-pro which is widely supported
+model = genai.GenerativeModel("gemini-pro")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -15,14 +17,16 @@ def index():
         target = request.form["target_lang"]
         user_input = request.form["text"]
         prompt = f"Translate the following text from {source} to {target}:\n\n{user_input}"
-        response = model.generate_content(prompt)
-        translation = response.text
+        
+        try:
+            response = model.generate_content(prompt)
+            translation = response.text
+        except Exception as e:
+            translation = f"Translation error: {str(e)}"
+    
     return render_template("index.html", translation=translation)
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
 if __name__ == "__main__":
     import os
-    port = int(os.environ.get("PORT", 5000))  # Render assigns this
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
-
